@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>PlayCraft AI - Turn your prompt into a playable mini game instantly</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Twinkling Stars Background -->
+        <div class="twinkling-stars" id="twinklingStars"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon" style="background: #000; padding: 5px;">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                            <defs>
+                                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#7b2cbf;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="logoGlow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <rect x="2" y="2" width="96" height="96" rx="20" fill="none" stroke="url(#logoGrad)" stroke-width="2" filter="url(#logoGlow)"/>
+                            <path d="M28 38L38 38" stroke="#00ff88" stroke-width="3" stroke-linecap="round" filter="url(#logoGlow)"/>
+                            <path d="M28 44L38 44" stroke="#00ff88" stroke-width="3" stroke-linecap="round" filter="url(#logoGlow)"/>
+                            <circle cx="72" cy="41" r="5" fill="#00d4ff" filter="url(#logoGlow)"/>
+                            <circle cx="72" cy="53" r="5" fill="#7b2cbf" filter="url(#logoGlow)"/>
+                            <rect x="22" y="58" width="56" height="18" rx="9" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" filter="url(#logoGlow)"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>PlayCraft AI</h1>
+                        <p class="tagline">Turn your prompt into a playable mini game instantly</p>
+                        <a href="https://www.linkedin.com/in/muzna-amir-280135264/" target="_blank" rel="noopener noreferrer" class="creator-name">Created by Muzna Amir</a>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost btn-icon" id="clearHistoryBtn" title="Clear History" aria-label="Clear history">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel - Input & History -->
+            <aside class="left-panel">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h2>Create Your Game</h2>
+                        <p>Describe the mini game you want to create</p>
+                    </div>
+                    
+                    <div class="prompt-section">
+                        <div class="input-wrapper">
+                            <textarea 
+                                id="promptInput" 
+                                placeholder="Example: Create a Tic-Tac-Toe game with a score counter and animated winning line..."
+                                rows="4"
+                                aria-label="Game prompt"
+                            ></textarea>
+                            <button class="btn-clear-input" id="clearPromptBtn" type="button" title="Clear" aria-label="Clear prompt">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-generate" id="generateBtn" type="button">
+                            <span class="btn-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                </svg>
+                            </span>
+                            <span class="btn-text">Generate Game</span>
+                            <span class="btn-loader">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="60" stroke-dashoffset="0"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="history-section">
+                        <div class="section-header">
+                            <h3>Prompt History</h3>
+                            <span class="history-count" id="historyCount">0</span>
+                        </div>
+                        <div class="history-list" id="historyList" role="list">
+                            <div class="empty-state">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <p>No prompts yet. Start creating!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Templates -->
+                <div class="panel-card templates-card">
+                    <div class="panel-header">
+                        <h3>Quick Templates</h3>
+                    </div>
+                    <div class="templates-grid">
+                        <button class="template-btn" type="button" data-prompt="Create a classic Tic-Tac-Toe game with X and O symbols, score counter, and animated winning line">
+                            <span class="template-icon">⭕</span>
+                            <span>Tic-Tac-Toe</span>
+                        </button>
+                        <button class="template-btn" type="button" data-prompt="Create a Memory Card matching game with colorful cards, flip animations, and move counter">
+                            <span class="template-icon">🎴</span>
+                            <span>Memory Cards</span>
+                        </button>
+                        <button class="template-btn" type="button" data-prompt="Create a Snake game with smooth movement, score display, and increasing speed">
+                            <span class="template-icon">🐍</span>
+                            <span>Snake</span>
+                        </button>
+                        <button class="template-btn" type="button" data-prompt="Create a Breakout/Brick Breaker game with paddle, ball physics, and brick destruction">
+                            <span class="template-icon">🧱</span>
+                            <span>Brick Breaker</span>
+                        </button>
+                        <button class="template-btn" type="button" data-prompt="Create a Whack-a-Mole game with random mole appearances, score, and timer">
+                            <span class="template-icon">🔨</span>
+                            <span>Whack-a-Mole</span>
+                        </button>
+                        <button class="template-btn" type="button" data-prompt="Create a 2048 puzzle game with tile merging, smooth animations, and score tracking">
+                            <span class="template-icon">🔢</span>
+                            <span>2048</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Panel - Preview & Code -->
+            <section class="right-panel">
+                <!-- Preview Section -->
+                <div class="preview-section">
+                    <div class="panel-card preview-card">
+                        <div class="preview-header">
+                            <div class="preview-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                <span>Live Preview</span>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn btn-icon-only" id="refreshPreviewBtn" type="button" title="Refresh Preview" aria-label="Refresh preview">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-icon-only" id="fullscreenPreviewBtn" type="button" title="Fullscreen" aria-label="Fullscreen preview">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="preview-container" id="previewContainer">
+                            <div class="preview-placeholder" id="previewPlaceholder">
+                                <div class="placeholder-content">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <p>Your generated game will appear here</p>
+                                    <span>Enter a prompt and click Generate</span>
+                                </div>
+                            </div>
+                            <iframe id="gamePreview" class="game-preview" sandbox="allow-scripts allow-same-origin" title="Game Preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Section -->
+                <div class="code-section">
+                    <div class="panel-card code-card">
+                        <div class="code-header">
+                            <div class="code-tabs" role="tablist" aria-label="Code tabs">
+                                <button class="tab-btn active" data-tab="html" role="tab" aria-selected="true" type="button">
+                                    <span class="tab-icon html-icon">&lt;&gt;</span>
+                                    <span>HTML</span>
+                                </button>
+                                <button class="tab-btn" data-tab="css" role="tab" aria-selected="false" type="button">
+                                    <span class="tab-icon css-icon">#</span>
+                                    <span>CSS</span>
+                                </button>
+                                <button class="tab-btn" data-tab="js" role="tab" aria-selected="false" type="button">
+                                    <span class="tab-icon js-icon">{}</span>
+                                    <span>JavaScript</span>
+                                </button>
+                            </div>
+                            <div class="code-actions">
+                                <button class="btn btn-ghost btn-sm" id="copyCodeBtn" type="button" title="Copy Code" aria-label="Copy code">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="downloadBtn" type="button" title="Download Project" aria-label="Download project">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                    </svg>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-content">
+                            <div class="code-viewer active" id="htmlViewer" role="tabpanel">
+                                <pre><code id="htmlCode"></code></pre>
+                            </div>
+                            <div class="code-viewer" id="cssViewer" role="tabpanel">
+                                <pre><code id="cssCode"></code></pre>
+                            </div>
+                            <div class="code-viewer" id="jsViewer" role="tabpanel">
+                                <pre><code id="jsCode"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <h3>Generating Your Game</h3>
+                <p id="loadingText">Analyzing your prompt...</p>
+                <div class="loading-progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast" role="alert" aria-live="polite">
+            <span class="toast-icon" id="toastIcon">✓</span>
+            <span class="toast-message" id="toastMessage">Success!</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
