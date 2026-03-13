@@ -31,7 +31,7 @@ The project focuses on delivering a **clean, responsive, and visually appealing 
 
 #### 🚀 Live Demo
 
-##### [🎮 PlayCraft AI](url)
+##### [🎮 PlayCraft AI](https://playcraft-ai.vercel.app/)
 
 ---
 ### 🛠 Tech Stack
